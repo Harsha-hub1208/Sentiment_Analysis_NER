@@ -5,8 +5,8 @@ import streamlit as st
 # Load Spacy NER model
 nlp = spacy.load("en_core_web_sm")
 
-# Set OpenAI API key
-openai.api_key = 'YOUR_OPENAI_API_KEY'
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 # Function to perform Named Entity Recognition (NER)
 def extract_entities(review):
@@ -18,7 +18,7 @@ def extract_entities(review):
 def analyze_sentiment_with_words(review, category):
     prompt = f"Analyze the sentiment of the following {category} review and provide sentiment contributions for each word (percentage):\n\nReview: {review}"
 
-    response = openai.ChatCompletion.create(
+    response = client.ChatCompletion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a sentiment analysis assistant."},
